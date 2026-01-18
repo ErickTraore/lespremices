@@ -1,0 +1,74 @@
+## File: lespremices/docker-compose.yml 
+services:
+  user-backend:
+    image: node:20
+    working_dir: /usr/src/app
+    volumes:
+      - ./user-backend:/usr/src/app
+    env_file:
+      - ./user-backend/.env.production
+    environment:
+      NODE_ENV: production
+    command: bash -c "node server.prod.js"
+    depends_on:
+      - mariadb
+    restart: always
+    ports:
+      - "7001:7001"
+
+  media-backend:
+    image: node:20
+    working_dir: /usr/src/app
+    volumes:
+      - ./media-backend:/usr/src/app
+      - ./media-backend/.env.production:/usr/src/app/.env.production
+    environment:
+      NODE_ENV: production
+    command: bash -c "node server.prod.js"
+    depends_on:
+      - mariadb
+    restart: always
+    ports: 
+      - "7002:7002"
+
+  mariadb:
+    image: mariadb:11
+    restart: always
+    environment:
+      MARIADB_DATABASE: user_prod_lespremices_v1
+      MARIADB_USER:   c
+      MARIADB_PASSWORD: LesPremices@2025!
+      MARIADB_ROOT_PASSWORD: RootPass@2025!
+    volumes:
+      - lespremices-db-data:/var/lib/mysql
+    ports:
+      - "3307:3306"
+
+  nginx:
+    image: nginx:stable
+    depends_on:
+      - user-backend
+      - media-backend
+    ports:
+      - "8081:80"
+
+    volumes:
+      - ./nginx:/etc/nginx/
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+      - ./frontend/build:/usr/share/nginx/html:ro
+      - ./media-backend/public:/usr/src/app/public:ro
+      - ./media-backend/uploads:/usr/src/app/uploads
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mariadb
+    environment:
+      ADMINER_DEFAULT_SERVER: mariadb
+
+   
+volumes:
+  lespremices-db-data:

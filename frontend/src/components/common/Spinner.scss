@@ -1,0 +1,49 @@
+// File: frontend/src/components/common/Spinner.scss
+
+.spinner-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  &.spinner-block {
+    padding: 20px;
+    flex-direction: column;
+  }
+
+  &.spinner-inline {
+    flex-direction: row;
+  }
+
+  .spinner-text {
+    color: #666;
+    font-size: 14px;
+  }
+}
+
+// Tailles du spinner
+.spinner-small {
+  font-size: 16px;
+}
+
+.spinner-medium {
+  font-size: 24px;
+}
+
+.spinner-large {
+  font-size: 48px;
+}
+
+.spinner-xlarge {
+  font-size: 64px;
+}
+
+// Spinner dans les boutons
+button .spinner-container {
+  padding: 0;
+  gap: 8px;
+  
+  i {
+    font-size: 14px;
+  }
+}

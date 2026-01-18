@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/static/css/main.fbfb1aac.css",
+    "main.js": "/static/js/main.8d94e002.js",
+    "static/js/488.985f1494.chunk.js": "/static/js/488.985f1494.chunk.js",
+    "static/media/banniere-1024x142.png": "/static/media/banniere-1024x142.eb618d068bad4b8e6bcf.png",
+    "static/media/banniere-768x107.png": "/static/media/banniere-768x107.975561d12d9028f86da2.png",
+    "static/media/banniere-1440x200.png": "/static/media/banniere-1440x200.e6bd875de4d8dbe27457.png",
+    "static/media/logoppaci514_150x151.png": "/static/media/logoppaci514_150x151.eedee5790892a1a454ab.png",
+    "static/media/banniere-425x59.png": "/static/media/banniere-425x59.9c1e075cbd3c1f8547e0.png",
+    "static/media/banniere-375x52.png": "/static/media/banniere-375x52.8a8336db5d71922c18d3.png",
+    "static/media/banniere-320x44.png": "/static/media/banniere-320x44.46116f929632830895c0.png",
+    "static/media/banniere-200x28.png": "/static/media/banniere-200x28.1814fc3ab023e2cc7df5.png",
+    "index.html": "/index.html",
+    "main.fbfb1aac.css.map": "/static/css/main.fbfb1aac.css.map",
+    "main.8d94e002.js.map": "/static/js/main.8d94e002.js.map",
+    "488.985f1494.chunk.js.map": "/static/js/488.985f1494.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.fbfb1aac.css",
+    "static/js/main.8d94e002.js"
+  ]
+}

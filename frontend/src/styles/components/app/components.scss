@@ -1,0 +1,339 @@
+// File: frontend/src/styles/components/app/components.scss
+
+html,
+body {
+  background: #f1f1f1;
+  font-family: 'Merriweather', sans-serif;
+  // padding: 0.5em;
+}
+
+.App {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+
+  &__header {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: space-between; // ✅ Ajouté
+    padding: 4px;
+    background-color: rgb(125, 154, 236);
+    border: solid 1px darkblue;
+    border-radius: 10px;
+    ;
+
+    &__logo {
+      width: 15%;
+      height: auto;
+      display: flex;
+      align-items: center;
+
+      &__img {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        border-radius: 10px;
+      }
+    }
+
+    &__panneau {
+      width: 75%;
+      height: auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+
+      &__text-1 {
+        width: 100%;
+        height: 50%;
+        margin: 0px 0px;
+        font-size: 0.9rem;
+        color: white;
+        text-align: center;
+        font-weight: bold;
+
+      }
+
+      &__text-2 {
+        width: 100%;
+        height: 50%;
+        margin: 0px 0px;
+        font-size: 0.6rem;
+        color: white;
+        text-align: center;
+        font-weight: bold;
+
+      }
+    }
+
+    &__actions {
+      width: 10%;
+      height: auto; // ✅ s'étend sur toute la hauteur du header
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between; // ✅ espace maximal entre les enfants
+      align-items: center;
+      &__buttons {
+        width: 100%;
+        height: 40%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        &__logout {
+          width: 100%;
+          height: 100%;
+          display: flex;
+          color: white;
+          cursor: pointer;
+          background-color: rgb(125, 154, 236);
+          border: none;
+          &__fa {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 4vw;
+            font-weight: bold;
+            color: white;
+        }
+        }
+      }
+
+      &__cadenas {
+        width: 100%;
+        height: 30%;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        
+        &__timer {
+          font-size: clamp(10px, 2vw, 16px);
+          font-weight: bold;
+          color: white;
+          white-space: nowrap;
+          
+          &--logout {
+            color: #ef4444; // rouge pour logout
+          }
+        }
+        
+        &__icon {
+          font-size: clamp(12px, 3vw, 20px);
+          color: #4ade80; // vert pour connecté
+          display: flex;
+          align-items: center;
+          margin-right: 2px;
+          
+          &--logout {
+            color: #ef4444; // rouge pour logout
+          }
+        }
+      }
+
+      &__hamburger {
+        width: 100%;
+        height:30%;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+
+        &__icon {
+          font-size: clamp(14px, 4vw, 40px);
+          width: 100%;
+          height: auto;
+          display: flex;
+          cursor: pointer;
+          border: none;
+          display: none;
+          border-radius: 4px;
+          background-color: white;
+          color: darkblue;
+        }
+
+        &__icon {
+          display: block;
+        }
+      }
+
+    }
+
+  }
+}
+
+.menu {
+  display: none;
+  position: absolute;
+  top: 40px;
+  left: 0;
+  width: 100%;
+  /* Assurez-vous que le menu prend toute la largeur */
+  background: #333;
+  z-index: 1000;
+  color: white;
+  list-style: none;
+  padding: 10px;
+  border-radius: 4px;
+  justify-content: center;
+  /* Centre le contenu horizontalement */
+  align-items: center;
+
+  &.open {
+    display: flex;
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; // ✅ correction ici
+
+    li {
+      padding: 10px 20px;
+      cursor: pointer;
+
+      &:hover {
+        background: #555;
+      }
+    }
+  }
+}
+
+.horizontal-menu {
+  display: flex;
+  background: #333;
+  padding: 10px;
+  margin-top: 16px;
+  list-style: none;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  border: solid 3px white;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.horizontal-menu li {
+  padding: 0 20px;
+  cursor: pointer;
+}
+
+.horizontal-menu li a {
+  color: white;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+
+
+.horizontal-menu li:hover {
+  background: #555;
+}
+
+.horizontal-menu {
+  display: none;
+  /* Masquer le menu horizontal sur les petits écrans */
+}
+
+.menu {
+  width: 9rem;
+  position: absolute;
+  flex-direction: column;
+  /* Pour les petits écrans, afficher les éléments en colonne */
+  top: 150px;
+  left: 60px;
+  /* Ajustement pour éviter de chevaucher le logo et le bouton hamburger */
+}
+
+.menu-logo {
+  display: flex;
+  /* S'assurer que le logo est affiché dans le menu hamburger */
+  height: 35px;
+  /* Réduire la taille du logo pour mieux s'adapter */
+  margin-right: 10px;
+  /* Ajout d'un espace entre le logo et l'icône du menu */
+  border-radius: 10px;
+  margin-bottom: 16px;
+}
+
+.logo-and-icon {
+  width: 100%;
+  justify-content: space-around;
+  /* Espace entre le logo et l'icône du menu */
+  padding: 10px;
+}
+
+/* 📱 Mobile S: 376px – 425px */
+
+@media screen and (min-width: 375px) and (max-width: 425px) {
+  .App__header__panneau__text-1 {
+    font-size: 1.2rem;
+  }
+
+  .App__header__panneau__text-2 {
+    font-size: 0.7rem;
+  }
+}
+
+/* 📱 Mobile M: 426px – 768px */
+@media screen and (min-width: 426px) and (max-width: 600px) {
+  .App__header__panneau__text-1 {
+    font-size: 1.4rem;
+  }
+
+  .App__header__panneau__text-2 {
+    font-size: 0.8rem;
+  }
+}
+
+/* 📱 Mobile M: 426px – 768px */
+@media screen and (min-width: 601px) and (max-width: 767px) {
+  .App__header__panneau__text-1 {
+    font-size: 1.3rem;
+  }
+
+  .App__header__panneau__text-2 {
+    font-size: 1rem;
+  }
+}
+
+/* 💻 Tablet: 769px – 1024px */
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+.App__header__panneau__text-1 {
+    font-size: 2.5rem;
+  }
+
+  .App__header__panneau__text-2 {
+    font-size: 1.4rem;
+  }
+}
+
+/* 🖥️ Desktop: 1024px – 1440px */
+@media screen and (min-width: 1024px) and (max-width: 1440px) {
+.App__header__panneau__text-1 {
+    font-size: 3.5rem;
+  }
+
+  .App__header__panneau__text-2 {
+    font-size: 2.5rem;
+  }
+}
+
+/* 🖥️ Large Desktop: >1440px */
+@media screen and (min-width: 1441px) {
+  .App__header__panneau__text-1 {
+    font-size: 5rem;
+  }
+
+  .App__header__panneau__text-2 {
+    font-size: 3rem;
+  }
+}

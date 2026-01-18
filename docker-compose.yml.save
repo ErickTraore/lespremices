@@ -1,0 +1,48 @@
+
+
+
+services:
+  user-backend:
+    image: node:20
+    working_dir: /usr/src/app
+    volumes:
+      - ./user-backend:/usr/src/app
+      - ./user-backend/.env.production:/usr/src/app/.env
+    command: bash -c "npm install && node server.prod.js"
+    depends_on:
+      - mariadb
+
+  media-backend:
+    image: node:20
+    working_dir: /usr/src/app
+    volumes:
+      - ./media-backend:/usr/src/app
+      - ./media-backend/.env.production:/usr/src/app/.env.production
+    command: bash -c "npm install && node server.prod.js"
+    depends_on:
+      - mariadb
+
+  mariadb:
+    image: mariadb:11
+    restart: always
+    environment:
+      MARIADB_DATABASE: lespremices_db
+      MARIADB_USER: lespremices_user
+      MARIADB_PASSWORD: LesPremices@2025!
+      MARIADB_ROOT_PASSWORD: RootPass@2025!
+    volumes:
+      - lespremices-db-data:/var/lib/mysql
+
+  nginx:
+    image: nginx:stable
+    depends_on:
+      - user-backend
+      - media-backend
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+    restart: always
+
+volumes:
+  lespremices-db-data:
