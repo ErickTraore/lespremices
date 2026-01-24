@@ -6,7 +6,7 @@ import PresseTextOnly from "./types/PresseTextOnly";
 import PresseImageOnly from "./types/PresseImageOnly";
 import PresseVideoOnly from "./types/PresseVideoOnly";
 import PresseImageVideo from "./types/PresseImageVideo";
-// import "../../styles/pages/PresseList.scss";
+import "../../styles/pages/MessagesList.scss";
 
 const MEDIA_API = process.env.REACT_APP_MEDIA_API;
 const BASE_URL = process.env.REACT_APP_BASE_URL;
@@ -54,13 +54,13 @@ export default function PresseList() {
         valid.map(async (p) => {
           try {
             const res = await fetch(`${MEDIA_BACKEND_URL}/${p.id}`, {
-              headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+              headers: { Authorization: `Bearer ${localStorage.getItem("accessToken")}` }
             });
             if (!res.ok) return { ...p, media: [] };
             const data = await res.json();
             const normalized = (Array.isArray(data) ? data : []).map(f => ({
               ...f,
-              path: f.path.replace("/usr/src/app/uploads", "/media-backend")
+              path: f.url || f.path
             }));
 
             return { ...p, media: normalized };

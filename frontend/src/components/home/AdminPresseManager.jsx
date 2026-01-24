@@ -33,10 +33,10 @@ const AdminPresseManager = () => {
           });
           if (res.ok) {
             const data = await res.json();
-            // Normaliser les chemins comme dans PresseList
+            // Normaliser les chemins comme dans PresseList (priorité à url)
             const normalized = (Array.isArray(data) ? data : []).map(f => ({
               ...f,
-              path: f.path ? f.path.replace("/usr/src/app/uploads", "/media-backend") : ""
+              path: f.url || (f.path ? f.path.replace("/usr/src/app/uploads", "/media-backend") : "")
             }));
             media[msg.id] = normalized;
           }

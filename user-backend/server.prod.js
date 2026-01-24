@@ -11,11 +11,11 @@ console.log(`🌍 NODE_ENV = ${process.env.NODE_ENV}`);
 console.log(`🛢️ DB cible = ${process.env.DB_NAME} (host: ${process.env.DB_HOST}, user: ${process.env.DB_USERNAME})`);
 
 sequelize
-  .sync({ alter: true })
+  .authenticate()
   .then(() => {
+    console.log(`✅ Connexion USER-BACKEND à la BDD réussie (base: ${process.env.DB_NAME})`);
     app.listen(port, () => {
       console.log(`✅ USER-BACKEND (prod) lancé en HTTP sur le port ${port}`);
-      console.log(`✅ Connexion USER-BACKEND à la BDD réussie (base: ${process.env.DB_NAME})`);
     });
   })
   .catch((err) => {

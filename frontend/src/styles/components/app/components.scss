@@ -27,7 +27,7 @@ body {
     ;
 
     &__logo {
-      width: 15%;
+      width: 20%;
       height: auto;
       display: flex;
       align-items: center;
@@ -41,7 +41,7 @@ body {
     }
 
     &__panneau {
-      width: 75%;
+         padding-top: 12px;
       height: auto;
       display: flex;
       justify-content: center;
@@ -109,13 +109,14 @@ body {
         width: 100%;
         height: 30%;
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
-        gap: 8px;
+        gap: 4px;
+        padding-top: 9px;
         
         &__timer {
-          font-size: clamp(10px, 2vw, 16px);
+          font-size: clamp(14px, 3vw, 24px);
           font-weight: bold;
           color: white;
           white-space: nowrap;
@@ -126,11 +127,10 @@ body {
         }
         
         &__icon {
-          font-size: clamp(12px, 3vw, 20px);
+          font-size: clamp(18px, 5vw, 32px);
           color: #4ade80; // vert pour connecté
           display: flex;
           align-items: center;
-          margin-right: 2px;
           
           &--logout {
             color: #ef4444; // rouge pour logout

@@ -187,6 +187,55 @@ docker logs lespremices-nginx-1
 docker exec -it lespremices-mariadb-1 mysql -u root -p
 ```
 
+## ⚠️ Précautions à prendre pour une copie
+
+Lors de la duplication d'un projet vers un nouveau serveur, suivre ces étapes pour éviter les problèmes :
+
+### **Actions à exiger lors d'une copie totale** :
+
+#### 1. **Demander un diff systématique AVANT validation** ✅
+```bash
+"Fais un diff entre les deux configurations nginx/docker-compose/etc. 
+et explique-moi CHAQUE différence"
+```
+→ Cela oblige à comparer ligne par ligne
+
+#### 2. **Exiger une documentation des adaptations** 📝
+```
+"Liste TOUTES les modifications que tu as faites par rapport à l'original"
+```
+→ Distinguer :
+- Changements **intentionnels** (ports, domaines)
+- Changements **accidentels** (paths manquants, configurations incomplètes)
+
+#### 3. **Demander une validation par tests** 🧪
+```
+"Teste que l'API fonctionne exactement comme sur le serveur source"
+```
+→ Vérifier AVANT de considérer la copie terminée
+
+#### 4. **Exiger la preuve de conformité** 🔍
+```
+"Montre-moi que les deux nginx.conf sont identiques 
+(à l'exception des ports et domaines)"
+```
+
+### **Commande concrète recommandée** :
+
+> *"Copie [source] vers [destination]. Avant de valider, fais un diff de tous les fichiers de config et montre-moi les différences. Justifie chaque ligne qui diffère."*
+
+### **Points critiques à vérifier** :
+- Configuration Nginx : `proxy_pass` avec chemins API complets
+- Variables d'environnement (.env) : URLs, ports, credentials
+- Docker Compose : ports, volumes, noms de conteneurs
+- Base de données : structure ET données
+- Fichiers uploads : copie complète avec permissions
+- Code spécifique : localStorage keys, JWT secrets, chemins API
+
+**Principe** : Ne pas faire confiance aveuglément. **Exiger la preuve** que la copie est conforme.
+
+---
+
 ## 📄 Licence
 
 Projet propriétaire - PPA-CI © 2026

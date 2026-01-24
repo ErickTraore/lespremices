@@ -14,11 +14,14 @@ const FormArticleVideo = () => {
     video: null,
   });
   const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const fileInputRef = useRef(null);
 
   const handleInputChange = (e) => {
     setNewMessage({ ...newMessage, [e.target.name]: e.target.value });
     setErrorMessage('');
+    setSuccessMessage('');
   };
 
   const handleFileChange = (e) => {
@@ -65,6 +68,10 @@ const FormArticleVideo = () => {
       return;
     }
 
+    setIsLoading(true);
+    setErrorMessage('');
+    setSuccessMessage('');
+
     try {
       const messageResponse = await fetch(`${USER_API}/messages/new`, {
         method: 'POST',
@@ -91,12 +98,16 @@ const FormArticleVideo = () => {
       setNewMessage({ tittle: '', content: '', video: null });
       if (fileInputRef.current) fileInputRef.current.value = '';
       setErrorMessage('');
+      setSuccessMessage('✅ Article publié avec succès ! Rechargez la page pour le voir.');
+      setTimeout(() => setSuccessMessage(''), 5000);
 
       // 🔁 Réinitialisation du format dans Presse.jsx
       triggerFormatReset();
     } catch (error) {
       console.error('❌ Erreur lors de l\'envoi:', error);
       setErrorMessage('⚠️ Une erreur est survenue lors de l\'envoi.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -152,9 +163,28 @@ const FormArticleVideo = () => {
       )}
 
 
-      <button type="submit">📨 Publier</button>
+      <button type="submit" disabled={isLoading}>
+        {isLoading ? '⏳ Envoi en cours...' : '📨 Publier'}
+      </button>
+
+      {isLoading && (
+        <p style={{ marginTop: '10px', color: '#666' }}>📤 Upload de la vidéo en cours...</p>
+      )}
 
       {errorMessage && <p style={{ color: 'red' }}><strong>{errorMessage}</strong></p>}
+      
+      {successMessage && (
+        <p style={{ 
+          color: 'green', 
+          backgroundColor: '#d4edda',
+          border: '1px solid #c3e6cb',
+          padding: '12px',
+          borderRadius: '4px',
+          marginTop: '15px'
+        }}>
+          <strong>{successMessage}</strong>
+        </p>
+      )}
     </form>
   );
 };

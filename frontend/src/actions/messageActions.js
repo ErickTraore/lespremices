@@ -46,14 +46,14 @@ export const addMessage = (formData) => {
     try {
       // Envoyer le titre et le contenu au backend "user--backend"
       const messageData = {
-        tittle: formData.get('tittle'),
+        title: formData.get('title') || formData.get('tittle'),
         content: formData.get('content'),
       };
 
       await fetch(`${USER_API}/messages`, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(messageData),
@@ -72,7 +72,7 @@ export const addMessage = (formData) => {
         await fetch(`${USER_API}/upload`, {
           method: 'POST',
           headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
           },
           body: mediaFormData,
         });

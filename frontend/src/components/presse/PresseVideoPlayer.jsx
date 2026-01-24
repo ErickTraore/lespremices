@@ -13,6 +13,7 @@ export default function PresseVideoPlayer({
     const [playing, setPlaying] = useState(false);
     const [controlsVisible, setControlsVisible] = useState(false);
     const [settingsOpen, setSettingsOpen] = useState(false);
+    const [hovering, setHovering] = useState(false);
     const hideTimer = useRef(null);
 
     const video = videoRefs.current[id];
@@ -77,10 +78,21 @@ export default function PresseVideoPlayer({
                 showControls();
                 if (playing) scheduleHide();
             }}
-            onMouseEnter={showControls}
+            onMouseEnter={() => {
+                setHovering(true);
+                showControls();
+                if (video && !isActive(id)) {
+                    video.play();
+                }
+            }}
             onMouseLeave={() => {
+                setHovering(false);
                 if (playing) scheduleHide(800);
                 else setControlsVisible(false);
+                if (video && !isActive(id)) {
+                    video.pause();
+                    video.currentTime = 0;
+                }
             }}
         >
             <video
@@ -90,7 +102,12 @@ export default function PresseVideoPlayer({
                 controls={isActive(id)}
                 playsInline
                 preload="metadata"
-                style={{ width: "100%", height: "auto" }}
+                style={{ width: "100%", height: "auto", cursor: !isActive(id) && playing ? "pointer" : "default" }}
+                onClick={() => {
+                    if (!isActive(id) && playing) {
+                        toggle(id);
+                    }
+                }}
                 onPlay={() => {
                     setPlaying(true);
                     closeSettings();
@@ -188,7 +205,7 @@ export default function PresseVideoPlayer({
                 </div>
             )}
 
-            {!isActive(id) && (
+            {!isActive(id) && !playing && (
                 <div
                     className="presse__message__media__videoWrapper__overlay"
                     onClick={() => {

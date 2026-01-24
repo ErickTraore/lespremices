@@ -113,28 +113,20 @@ function App() {
         </div>
 
         <div className="App__header__actions">
-          <div className="App__header__actions__buttons">
-            {isAuthenticated && (
-              <button onClick={() => handleLogout(dispatch)} className="App__header__actions__buttons__logout">
-                <i className="App__header__actions__buttons__logout__fa fas fa-power-off"></i>
-              </button>
-            )}
-          </div>
-          
-          <div className="App__header__actions__cadenas">
+          <div className="App__header__actions__cadenas" onClick={() => handleLogout(dispatch)} style={{ cursor: 'pointer' }}>
             {isAuthenticated && sessionTimeLeft > 0 ? (
               <>
+                <i className="App__header__actions__cadenas__icon fas fa-lock-open"></i>
                 <span className="App__header__actions__cadenas__timer">
                   {Math.floor(sessionTimeLeft / 60)}:{(sessionTimeLeft % 60).toString().padStart(2, '0')}
                 </span>
-                <i className="App__header__actions__cadenas__icon fas fa-lock-open"></i>
               </>
             ) : (
               <>
+                <i className="App__header__actions__cadenas__icon App__header__actions__cadenas__icon--logout fas fa-lock"></i>
                 <span className="App__header__actions__cadenas__timer App__header__actions__cadenas__timer--logout">
                   00:00
                 </span>
-                <i className="App__header__actions__cadenas__icon App__header__actions__cadenas__icon--logout fas fa-lock"></i>
               </>
             )}
           </div>
