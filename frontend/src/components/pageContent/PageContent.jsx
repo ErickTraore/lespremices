@@ -26,7 +26,7 @@ const PageContent = React.memo(({ activePage }) => {
       {activePage === 'attestation' && <Attestation />} 
       {activePage === 'zoompage' && <Zoompage />} 
 
-      {activePage === 'presse' && <Presse />}          {/* ancien module admin */}
+      {activePage === 'admin-presse-générale' && <Presse />}  {/* admin presse générale */}
       {activePage === 'newpresse' && <NewPresse />}    {/* nouveau module */}
       {activePage === 'presse-locale' && <PresseLocale />}  {/* presse locale */}
       {activePage === 'presse-locale-admin' && <AdminPresseLocale />}  {/* admin presse locale */}

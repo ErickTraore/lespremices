@@ -94,7 +94,7 @@ function App() {
   // ✅ Memoïser menuItems pour éviter de recréer le tableau à chaque render
   const menuItems = useMemo(() => [
     { key: 'home', label: 'Home' },
-    ...(isAdmin ? [{ key: 'presse', label: 'Admin-presse' }] : []),
+    ...(isAdmin ? [{ key: 'admin-presse-générale', label: 'Admin-presse-générale' }] : []),
     { key: 'presse-locale', label: 'Presse Locale' },
     ...(isAdmin ? [{ key: 'presse-locale-admin', label: 'Admin-presse-locale' }] : []),
     { key: 'zoompage', label: 'Zoompage' },
