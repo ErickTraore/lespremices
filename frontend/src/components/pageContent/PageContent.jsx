@@ -12,6 +12,7 @@ import Zoompage from '../zoompage/Zoompage';
 import Presse from '../admin/presse/Presse';          // module admin (prod)
 import ProfilePage from '../profilepage/ProfilePage';
 import NewPresse from '../presse/Presse';             // nouveau module presse
+import PresseLocale from '../presseLocale/PresseLocale'; // presse locale
 
 const PageContent = React.memo(({ activePage }) => {
   return (
@@ -26,6 +27,7 @@ const PageContent = React.memo(({ activePage }) => {
 
       {activePage === 'presse' && <Presse />}          {/* ancien module admin */}
       {activePage === 'newpresse' && <NewPresse />}    {/* nouveau module */}
+      {activePage === 'presse-locale' && <PresseLocale />}  {/* presse locale */}
 
       {activePage === 'profilepage' && <ProfilePage />}
     </div>

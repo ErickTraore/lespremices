@@ -1,0 +1,183 @@
+// File: frontend/src/components/presseLocale/PresseLocale.jsx
+
+import React, { useEffect, useState, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchPresseLocale, filterPresseLocaleByCity } from "../../actions/presseLocaleActions";
+import PresseTextOnly from "../presse/types/PresseTextOnly";
+import PresseImageOnly from "../presse/types/PresseImageOnly";
+import PresseVideoOnly from "../presse/types/PresseVideoOnly";
+import PresseImageVideo from "../presse/types/PresseImageVideo";
+import "../../styles/pages/MessagesList.scss";
+import "./PresseLocale.css";
+
+const PRESSE_LOCALE_API = process.env.REACT_APP_PRESSE_LOCALE_API;
+const BASE_URL = process.env.REACT_APP_BASE_URL;
+const PRESSE_LOCALE_MEDIA_URL = `${PRESSE_LOCALE_API}/getMedia`;
+
+const CITIES = ['lyon', 'paris', 'marseille'];
+
+/**
+ * Détermine le type de presse (text-only, image-only, video-only, image-and-video)
+ */
+const getPresseViewType = (p) => {
+  const hasImage = Array.isArray(p.media) && p.media.some(m => (m.type || "").toLowerCase().includes("image"));
+  const hasVideo = Array.isArray(p.media) && p.media.some(m => (m.type || "").toLowerCase().includes("video"));
+
+  if (!hasImage && !hasVideo) return "text-only";
+  if (hasImage && !hasVideo) return "image-only";
+  if (!hasImage && hasVideo) return "video-only";
+  if (hasImage && hasVideo) return "image-and-video";
+  return "unknown";
+};
+
+export default function PresseLocale() {
+  const dispatch = useDispatch();
+  const presseLocale = useSelector((s) => s.presseLocale.filteredMessages);
+  const selectedCity = useSelector((s) => s.presseLocale.selectedCity);
+  const [localPresses, setLocalPresses] = useState([]);
+
+  const [activeId, setActiveId] = useState(null);
+  const toggle = (id) => setActiveId(prev => prev === id ? null : id);
+  const isActive = (id) => activeId === id;
+
+  const [videoActiveId, setVideoActiveId] = useState(null);
+  const toggleVideo = (id) => setVideoActiveId(prev => prev === id ? null : id);
+  const isVideoActive = (id) => videoActiveId === id;
+
+  const videoRefs = useRef({});
+  const [mediaLoaded, setMediaLoaded] = useState(false);
+
+  // Récupérer les presses locales au montage
+  useEffect(() => {
+    dispatch(fetchPresseLocale());
+  }, [dispatch]);
+
+  // Charger les médias associés
+  useEffect(() => {
+    if (!Array.isArray(presseLocale) || presseLocale.length === 0) return;
+    if (mediaLoaded && presseLocale.length > 0) return;
+
+    const valid = presseLocale.filter(p => p && p.id);
+    if (valid.length === 0) return;
+
+    const load = async () => {
+      const enriched = await Promise.all(
+        valid.map(async (p) => {
+          try {
+            const res = await fetch(`${PRESSE_LOCALE_MEDIA_URL}/${p.id}`, {
+              headers: { Authorization: `Bearer ${localStorage.getItem("accessToken")}` }
+            });
+            if (!res.ok) return { ...p, media: [] };
+            const data = await res.json();
+            const normalized = (Array.isArray(data) ? data : []).map(f => ({
+              ...f,
+              path: f.url || f.path
+            }));
+
+            return { ...p, media: normalized };
+          } catch {
+            return { ...p, media: [] };
+          }
+        })
+      );
+
+      setLocalPresses(enriched);
+      setMediaLoaded(true);
+    };
+
+    load();
+  }, [presseLocale, mediaLoaded]);
+
+  // Gérer le changement de filtre par ville
+  const handleCityFilter = (city) => {
+    dispatch(filterPresseLocaleByCity(selectedCity === city ? null : city));
+    setMediaLoaded(false); // Recharger les médias
+  };
+
+  return (
+    <div className="presse">
+      <div className="presse__container">
+        <div className="presse__container__title">📍 Presse Locale</div>
+
+        {/* Filtre par ville */}
+        <div className="presse__container__filters">
+          {CITIES.map((city) => (
+            <button
+              key={city}
+              className={`presse__container__filters__btn ${selectedCity === city ? 'active' : ''}`}
+              onClick={() => handleCityFilter(city)}
+            >
+              {city.charAt(0).toUpperCase() + city.slice(1)}
+            </button>
+          ))}
+          {selectedCity && (
+            <button
+              className="presse__container__filters__btn presse__container__filters__btn--reset"
+              onClick={() => handleCityFilter(null)}
+            >
+              ✕ Tous
+            </button>
+          )}
+        </div>
+
+        {/* Liste des presses */}
+        <div className="presse__container__messagelist">
+          {!Array.isArray(presseLocale) ? (
+            <p className="presse__container__messagelist__error">⚠️ Erreur : données non disponibles.</p>
+          ) : presseLocale.length === 0 ? (
+            <div className="presse__container__messagelist__empty">
+              <h3 className="presse__container__messagelist__empty__nothing">📭 Aucune presse locale</h3>
+              <p className="presse__container__messagelist__empty__add">
+                {selectedCity ? `Aucun contenu pour ${selectedCity}` : "Aucun contenu disponible."}
+              </p>
+            </div>
+          ) : (
+            (localPresses.length > 0 ? localPresses : presseLocale).map((p) => {
+              const type = getPresseViewType(p);
+
+              if (type === "text-only")
+                return <PresseTextOnly key={p.id} presse={p} isActive={isActive} toggle={toggle} />;
+
+              if (type === "image-only")
+                return <PresseImageOnly key={p.id} presse={p} isActive={isActive} toggle={toggle} BASE_URL={BASE_URL} />;
+
+              if (type === "video-only")
+                return (
+                  <PresseVideoOnly
+                    key={p.id}
+                    presse={p}
+                    isActive={isActive}
+                    toggle={toggle}
+                    isVideoActive={isVideoActive}
+                    toggleVideo={toggleVideo}
+                    BASE_URL={BASE_URL}
+                    videoRefs={videoRefs}
+                  />
+                );
+
+              if (type === "image-and-video")
+                return (
+                  <PresseImageVideo
+                    key={p.id}
+                    presse={p}
+                    isActive={isActive}
+                    toggle={toggle}
+                    isVideoActive={isVideoActive}
+                    toggleVideo={toggleVideo}
+                    BASE_URL={BASE_URL}
+                    videoRefs={videoRefs}
+                  />
+                );
+
+              return (
+                <div key={p.id} className="presse__message presse__message--unknown">
+                  <p>⚠️ Format non reconnu.</p>
+                </div>
+              );
+            })
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
