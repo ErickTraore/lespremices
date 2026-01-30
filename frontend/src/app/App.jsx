@@ -95,6 +95,7 @@ function App() {
   const menuItems = useMemo(() => [
     { key: 'home', label: 'Home' },
     ...(isAdmin ? [{ key: 'presse', label: 'Admin-presse' }] : []),
+    { key: 'presse-locale', label: 'Presse Locale' },
     { key: 'zoompage', label: 'Zoompage' },
     { key: 'contact', label: 'Contact' },
     { key: 'profilepage', label: 'ProfilePage' },
